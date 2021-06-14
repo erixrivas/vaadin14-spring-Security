@@ -19,6 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 
+import com.example.application.negocio.domain.repository.security.UserRepository;
+import com.example.application.negocio.domain.service.security.CustomAuthenticationProvider;
+import com.example.application.negocio.domain.service.security.CustomRememberMeServices;
+import com.example.application.negocio.seguridad.CustomRequestCache;
+import com.example.application.negocio.seguridad.SecurityUtils;
+
 @EnableWebSecurity
 @Configuration
 @Order(0)

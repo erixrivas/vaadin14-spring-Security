@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.example.application.negocio.domain.entities.seguridad.Permission;
+import com.example.application.negocio.domain.entities.seguridad.User;
 import com.vaadin.flow.server.ServletHelper.RequestType;
 import com.vaadin.flow.shared.ApplicationConstants;
 
@@ -85,7 +87,7 @@ public final class SecurityUtils {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		Boolean a = authentication != null;
-		Boolean b = authentication != null && ((Usuario) authentication.getPrincipal()).getRoles().stream()
+		Boolean b = authentication != null && ((User) authentication.getPrincipal()).getRoles().stream()
 				.anyMatch(e -> e.getPermisos().stream().anyMatch(o -> isPermited(o, privilige)));
 		Boolean c = authentication instanceof Authentication;
 
@@ -105,7 +107,7 @@ public final class SecurityUtils {
 	 * Auto-generated method stub return null; }
 	 */
 
-	private static boolean isPermited(Permiso o, String privilege) {
+	private static boolean isPermited(Permission o, String privilege) {
 
 		return o.getDescripcion().equalsIgnoreCase(privilege) || o.getDescripcion().equals("\\*");
 	}
@@ -128,9 +130,9 @@ public final class SecurityUtils {
 	 * // [...] }
 	 */
 
-	public static Usuario getUser() {
+	public static User getUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Usuario user = ((Usuario) authentication.getPrincipal());
+		User user = ((User) authentication.getPrincipal());
 		return user;
 	}
 
@@ -140,7 +142,7 @@ public final class SecurityUtils {
 		
 //		//buscamos permisos si el usuario tiene un * solo tiene full permisos
 		
-		Usuario usuario = getUser();
+		User usuario = getUser();
 		
 		List<String> permisos= new ArrayList<String>();
 		
