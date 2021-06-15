@@ -317,18 +317,13 @@
         
     </dependencies>
 
+
+
     <build>
-        <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- Clean build and startup time for Vaadin apps sometimes may exceed
-                     the default Spring Boot's 30sec timeout.  -->
-                <configuration>
-                    <wait>500</wait>
-                    <maxAttempts>240</maxAttempts>
-                </configuration>
             </plugin>
 
             <!--
@@ -347,6 +342,18 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <pnpmEnable>true</pnpmEnable>
+                </configuration>
+            </plugin>
+
+            <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -355,12 +362,22 @@
         <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
+            <properties>
+                <vaadin.productionMode>true</vaadin.productionMode>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-server-production-mode</artifactId>
+                </dependency>
+            </dependencies>
+
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.vaadin</groupId>
                         <artifactId>vaadin-maven-plugin</artifactId>
-                        <version>${vaadin.version}</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -370,58 +387,12 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <productionMode>true</productionMode>
+                            <pnpmEnable>true</pnpmEnable>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-
-        <profile>
-            <id>it</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-spring-boot</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-spring-boot</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Runs the integration tests (*IT) after the server is started -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <trimStackTrace>false</trimStackTrace>
-                            <enableAssertions>true</enableAssertions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
     </profiles>
+
 </project>
