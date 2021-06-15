@@ -2,6 +2,7 @@ package com.example.application;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.apache.commons.math3.optim.linear.UnboundedSolutionException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.example.application.negocio.domain.entities.seguridad.User;
 import com.example.application.negocio.seguridad.SecurityUtils;
 import com.example.application.securityTestContext.WithMockCustomUser;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
@@ -106,6 +108,8 @@ class TestSecurity {
 	
 	@Test @WithMockCustomUser(name = "t",username = "t",password = "t")
 	void test() {
+		User user =SecurityUtils.getUser();
+		assertEquals(user.getUsername(), "t");
 	//	fail("Not yet implemented");
 	}
 

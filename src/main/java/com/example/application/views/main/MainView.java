@@ -29,7 +29,10 @@ import com.example.application.views.about.AboutView;
  * The main view is a top-level placeholder for other views.
  */
 @PWA(name = "vaadinSpringSecurity", shortName = "vaadinSpringSecurity", enableInstallPrompt = false)
-@Theme(themeFolder = "vaadinspringsecurity", variant = Lumo.DARK)
+
+@Theme(value = Lumo.class, variant = Lumo.DARK)
+//@CssImport("./views/main/main-view.css")
+//@Theme(themeFolder = "vaadinspringsecurity", variant = Lumo.DARK)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
