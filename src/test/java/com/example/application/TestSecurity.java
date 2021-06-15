@@ -110,6 +110,8 @@ class TestSecurity {
 	void test() {
 		User user =SecurityUtils.getUser();
 		assertEquals(user.getUsername(), "t");
+		
+		
 	//	fail("Not yet implemented");
 	}
 
